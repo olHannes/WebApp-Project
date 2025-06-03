@@ -52,17 +52,6 @@ function formatDate(isoDate) {
     return date.toLocaleDateString("de-DE", { year: "numeric", month: "long" });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializeData(window['projects'], []);
-    articleList = window.projektManager.getAll();
-    const sortSelect = document.getElementById("sortierung");
-    const searchInput = document.querySelector('.filterbox input[type="text"]');
-
-    sortSelect.addEventListener("change", updateView);
-    searchInput.addEventListener("change", updateView);
-
-    showArticles();
-});
 
 function updateView() {
     const sortKriterium = document.getElementById("sortierung").value;
@@ -79,8 +68,8 @@ function updateView() {
         filteredList = filteredList.filter((p) =>
             p.title?.toLowerCase().includes(suchbegriffLC) ||
             p.shortDescription?.toLowerCase().includes(suchbegriffLC) ||
-            p.manager_name?.toLowerCase().includes(suchbegriffLC) ||
-            p.manager_email?.toLowerCase().includes(suchbegriffLC)
+            p.contactInfo.manager_name?.toLowerCase().includes(suchbegriffLC) ||
+            p.contactInfo.manager_email?.toLowerCase().includes(suchbegriffLC)
         );
     }
     switch (sortKriterium) {
@@ -97,3 +86,17 @@ function updateView() {
     articleList = filteredList;
     showArticles();
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    initializeData(window['projects'], window['datasources']);
+
+    articleList = window.projektManager.getAll();
+    const sortSelect = document.getElementById("sortierung");
+    const searchInput = document.querySelector('.filterbox input[type="text"]');
+
+    sortSelect.addEventListener("change", updateView);
+    searchInput.addEventListener("change", updateView);
+
+    showArticles();
+});

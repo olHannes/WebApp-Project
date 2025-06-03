@@ -1,4 +1,5 @@
 import { initializeData } from "./init.js";
+import { Datenquelle } from "./models.js";
 
 let lastProjects = [];
 
@@ -18,7 +19,7 @@ function showLastProjects() {
 
         const h2 = document.createElement('h2');
         const a = document.createElement('a');
-        a.href = `projectView/projectView.html?id=${project.id}`;
+        a.href = project instanceof Datenquelle? `dataView/dataView.html?id=${project.id}`: `projectView/projectView.html?id=${project.id}`;
         a.textContent = project.title;
         h2.appendChild(a);
 
@@ -32,14 +33,21 @@ function showLastProjects() {
 }
 
 function startSearch(searchTxt) {
-    let test = window.projektManager.suche("title", searchTxt);
-    lastProjects = test.slice(0,3);
+    let projects = window.projektManager.suche("title", searchTxt);
+    let datasources = window.datenquellenManager.suche("title", searchTxt);
+    let combinedResult = datasources.concat(projects);
+    combinedResult.sort((a, b) => {
+        if (a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+        if (a.title.toLowerCase() > b.title.toLowerCase()) return 1;
+        return 0;
+    });
+    lastProjects = combinedResult.slice(0, 3);
     showLastProjects();
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    initializeData(window['projects'], []);
+    initializeData(window['projects'], window['datasources']);
     initFilter();
     showLastProjects();
 });
