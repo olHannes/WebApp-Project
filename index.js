@@ -33,7 +33,7 @@ function showLastProjects() {
 
 function startSearch(searchTxt) {
     let test = window.projektManager.suche("title", searchTxt);
-    lastProjects = test;
+    lastProjects = test.slice(0,3);
     showLastProjects();
 }
 
