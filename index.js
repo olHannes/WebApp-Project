@@ -3,7 +3,8 @@ import { initializeData } from "./init.js";
 let lastProjects = [];
 
 function initFilter() {
-    lastProjects = [...window['projects']]
+    lastProjects = window.projektManager.getAll();
+    lastProjects = lastProjects
         .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
         .slice(0, 3);
 }
@@ -13,6 +14,7 @@ function showLastProjects() {
     projectContainer.innerHTML = '';
 
     lastProjects.forEach(project => {
+        console.log(project);
         const article = document.createElement('article');
 
         const h2 = document.createElement('h2');
@@ -23,6 +25,7 @@ function showLastProjects() {
 
         const p = document.createElement('p');
         p.textContent = project.short_description;
+        p.textContent = project.shortDescription;
 
         article.appendChild(h2);
         article.appendChild(p);
@@ -31,18 +34,14 @@ function showLastProjects() {
 }
 
 function startSearch(searchTxt) {
-    const filtered = window['projects'].filter(project =>
-        project.title.toLowerCase().includes(searchTxt.toLowerCase())
-        || project.short_description.toLowerCase().includes(searchTxt.toLowerCase())
-    );
-    lastProjects = filtered.slice(0, 3);
+    let test = window.projektManager.suche("title", searchTxt);
+    lastProjects = test;
     showLastProjects();
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeData(window['projects'], []);
-
     initFilter();
     showLastProjects();
 });
