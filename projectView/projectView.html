@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Projektportal für Umweltprojekte - didaktisches Semesterprojekt"
+    />
+    <meta name="author" content="Student Hannes Olschok" />
+    <title>Projektanzeige</title>
+    <link rel="stylesheet" href="../style.css" />
+    <script type="module" src="../models.js"></script>
+    <script src="../exampleData/WBA_2025_Prak7_projects.js"></script>
+    <script type="module" src="./projectView.js"></script>
+  </head>
+  <body>
+    <a id="top"></a>
+
+    <header id="sticky-header">
+      <h1 class="editable" contenteditable="true">Projekt Waldschutz</h1>
+      <img src="../images/projectLogo.avif" alt="Projektlogo" />
+    </header>
+
+    <nav>
+      <a href="../index.html"
+        ><img src="../images/startseite.svg" alt="Startseite" id="startpageBtn"
+      /></a>
+      <a href="../projectList/projectList.html">Projektliste</a>
+      <a href="../dataView/dataView.html">Datenquellenliste</a>
+    </nav>
+
+    <div id="page-container">
+      <aside id="content-nav">
+        <ol>
+          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#langbeschreibung">Langbeschreibung</a></li>
+          <li><a href="#datenquellen">Datenquellen</a></li>
+        </ol>
+      </aside>
+
+      <form action="http://localhost" method="POST" id="data-form">
+        <h2>Datenquelle hinzufügen</h2>
+
+        <label for="name">Name der Datenquelle</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="beschreibung">Beschreibung</label>
+        <textarea
+          id="beschreibung"
+          name="beschreibung"
+          rows="4"
+          required
+        ></textarea>
+
+        <label for="url">Datenquellen-URL</label>
+        <input type="url" id="url" name="url" required />
+
+        <label for="datum">Aktualisierungsdatum</label>
+        <input type="date" id="datum" name="datum" required />
+
+        <button
+          type="submit"
+          onclick="document.getElementById('data-form').style.display='none'"
+        >
+          Absenden
+        </button>
+      </form>
+
+      <main>
+        <section id="kontakt">
+          <h2>Kontakt</h2>
+          <p>
+            <span class="editable" contenteditable="true">Max Mustermann</span
+            ><br />
+            <span class="editable" contenteditable="true">max@umwelt.de</span>
+          </p>
+        </section>
+
+        <section>
+          <h2>Kurzbeschreibung</h2>
+          <p class="editable" contenteditable="true">
+            Dieses Projekt befasst sich mit dem Schutz des Waldes durch den
+            Einsatz von Sensordaten zur Überwachung.
+          </p>
+        </section>
+
+        <section id="langbeschreibung">
+          <h2>Langbeschreibung</h2>
+          <p class="editable" contenteditable="true">
+            Das Projekt sammelt Umweltdaten aus verschiedenen Quellen und stellt
+            sie zur Analyse zur Verfügung. Ziel ist es, schädliche Entwicklungen
+            frühzeitig zu erkennen und Maßnahmen einzuleiten.
+          </p>
+        </section>
+
+        <section id="datenquellen">
+          <h2>Datenquellen</h2>
+          <ul class="data-list">
+            <li>
+              <strong>Sensornetz A</strong><br />
+              Temperatur- und Feuchtigkeitsdaten aus dem Schwarzwald.<br />
+              <em>Aktualisiert: 01.01.2025</em><br />
+              <a href="../dataView/dataView.html">Zur Anzeige</a>
+            </li>
+            <li>
+              <strong>Sensornetz B</strong><br />
+              Luftqualitätsdaten aus Bayern.<br />
+              <em>Aktualisiert: 02.01.2025</em><br />
+              <a href="../dataView/dataView.html">Zur Anzeige</a>
+            </li>
+          </ul>
+          <button
+            onclick="document.getElementById('data-form').style.display='block';"
+          >
+            Neue Datenquelle hinzufügen
+          </button>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <a href="impressum.html">Impressum</a> |
+      <a href="datenschutz.html">Datenschutzerklärung</a> |
+      <a href="haftung.html">Haftungsausschluss</a><br />
+      &copy; didaktisches Semesterprojekt 2025<br />
+    </footer>
+    <a href="#top" id="topBtn">Zum Seitenanfang</a>
+  </body>
+
+  <style>
+    main {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    main section {
+      background-color: var(--box-bg);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--box-border);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    main section:hover {
+      transform: translateY(-5px);
+      background-color: var(--box-hover);
+    }
+
+    main section h2 {
+      font-size: 1.8rem;
+      color: var(--nav-hover);
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--box-border);
+      padding-bottom: 0.5rem;
+    }
+
+    main section p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .data-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .data-list li {
+      background-color: var(--box-hover);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--box-border);
+      transition: transform 0.3s;
+    }
+
+    .data-list li:hover {
+      transform: scale(1.02);
+    }
+
+    button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      background-color: var(--button-bg);
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--button-hover);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      #page-container {
+        flex-direction: column;
+      }
+
+      #content-nav {
+        position: relative;
+        top: unset;
+        width: 100%;
+        margin: 0;
+        border: none;
+        padding: 0.5rem 1rem;
+        background-color: var(--box-bg);
+        border-bottom: 1px solid var(--box-border);
+      }
+
+      #content-nav ol {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding-left: 0;
+        margin: 0.5rem 0;
+      }
+
+      #content-nav li {
+        list-style: none;
+        margin: 0.2rem 0.5rem;
+      }
+    }
+
+    form#data-form {
+      display: none;
+      background-color: var(--box-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    form#data-form h2 {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    form#data-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    form#data-form input[type="text"],
+    form#data-form input[type="url"],
+    form#data-form input[type="date"],
+    form#data-form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1.2rem;
+      border: 2px solid var(--input-border);
+      border-radius: 8px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    form#data-form input:focus,
+    form#data-form textarea:focus {
+      border-color: var(--input-focus-border);
+      outline: none;
+    }
+
+    form#data-form button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--button-bg);
+      color: var(--text-color);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    form#data-form button:hover {
+      background-color: var(--button-hover);
+    }
+
+    .editable {
+      outline: none;
+      transition: background-color 0.3s, border 0.3s;
+    }
+
+    .editable:hover,
+    .editable:focus {
+      background-color: #17402c;
+      color: white;
+      border: 1px dashed #008000;
+      border-radius: 5px;
+      padding: 0.2rem;
+      border-radius: 5px;
+      cursor: text;
+    }
+  </style>
+</html>

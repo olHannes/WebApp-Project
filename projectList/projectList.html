@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Projektportal für Umweltprojekte - didaktisches Semesterprojekt"
+    />
+    <meta name="author" content="Student Hannes Olschok" />
+    <title>Projektliste</title>
+    <link rel="stylesheet" href="../style.css" />
+
+    <script type="module" src="../models.js"></script>
+
+    <script src="../exampleData/WBA_2025_Prak7_datasets.js"></script>
+    <script src="../exampleData/WBA_2025_Prak7_datasources.js"></script>
+    <script src="../exampleData/WBA_2025_Prak7_projects.js"></script>
+  </head>
+
+  <body>
+    <a id="top"></a>
+    <header>
+      <picture>
+        <source media="(min-width: 1920px)" srcset="header1920x200.png" />
+        <source media="(min-width: 1280px)" srcset="header1280x133.png" />
+        <source media="(min-width: 640px)" srcset="header640x67.png" />
+        <img src="header320x34.png" alt="Header" />
+      </picture>
+    </header>
+    <nav>
+      <a href="../index.html"
+        ><img src="../images/startseite.svg" alt="Startseite" id="startpageBtn"
+      /></a>
+      <a href="projectList.html">Projektliste</a>
+      <a href="../dataView/dataView.html">Datenquellenliste</a>
+    </nav>
+
+    <main>
+      <div class="filterbox">
+        <label for="sortierung">Sortierung nach:</label>
+        <select id="sortierung">
+          <option>Anfangsdatum</option>
+          <option>Restlaufzeit</option>
+          <option>Anzahl der Datenquellen</option>
+        </select>
+        <input type="text" placeholder="Suche" />
+      </div>
+
+      <div id="articleView">
+        <article>
+          <header>
+            <h2>
+              <a href="../projectView/projectView.html">Beispiel Projekt</a>
+            </h2>
+          </header>
+          <p>Beispiel</p>
+          <span class="dataSource">Anzahl Datenquellen: x</span>
+          <footer>
+            <small>Letzte Aktualisierung: xx Januar</small>
+          </footer>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+      <a href="impressum.html">Impressum</a> |
+      <a href="datenschutz.html">Datenschutzerklärung</a> |
+      <a href="haftung.html">Haftungsausschluss</a><br />
+      &copy; didaktisches Semesterprojekt 2025<br />
+    </footer>
+    <a href="#top" id="topBtn">Zum Seitenanfang</a>
+
+    <script type="module">
+      import { addProject, showArticles } from "./projectList.js";
+
+      window["projects"].forEach(addProject);
+    </script>
+  </body>
+  <style>
+    article {
+        margin: 0;
+        width: 95dvw;
+        position: relative;
+        left: 2.5dvw;
+        margin-bottom: 15px;
+    }
+  </style>
+</html>
