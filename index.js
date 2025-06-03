@@ -14,7 +14,6 @@ function showLastProjects() {
     projectContainer.innerHTML = '';
 
     lastProjects.forEach(project => {
-        console.log(project);
         const article = document.createElement('article');
 
         const h2 = document.createElement('h2');
@@ -24,7 +23,6 @@ function showLastProjects() {
         h2.appendChild(a);
 
         const p = document.createElement('p');
-        p.textContent = project.short_description;
         p.textContent = project.shortDescription;
 
         article.appendChild(h2);
