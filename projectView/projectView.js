@@ -5,7 +5,6 @@ function getProjectIdFromUrl() {
     return params.get("id");
 }
 
-
 function renderDatenquellen(datenquellen) {
     const container = document.querySelector('#datenquellen .data-list');
     container.innerHTML = '';
@@ -41,24 +40,28 @@ function initFilter() {
         console.warn("Projekt nicht gefunden:", projectId);
         return;
     }
+    const pTitle = projekt.title ?? "Ohne Titel";
+    const pShortDescription = projekt.shortDescription ?? "Keine Kurzbeschreibung verfügbar";
+    const pLongDescription = projekt.longDescription ?? "Keine Langbeschreibung verfügbar";
+    const pManagerName = projekt.contactInfo.manager_name ?? "unbekannt";
+    const pManagerEmail = projekt.contactInfo.manager_email ?? "unbekannt";
 
     const h1 = document.querySelector("header h1");
-    if (h1) h1.textContent = projekt.title;
+    if (h1) h1.textContent = pTitle;
 
     const kurzbeschreibung = document.querySelector("section:nth-of-type(2) p");
-    if (kurzbeschreibung) kurzbeschreibung.textContent = projekt.short_description;
+    if (kurzbeschreibung) kurzbeschreibung.textContent = pShortDescription;
 
     const langbeschreibung = document.querySelector("#langbeschreibung p");
-    if (langbeschreibung) langbeschreibung.textContent = projekt.long_descriptions;
+    if (langbeschreibung) langbeschreibung.textContent = pLongDescription;
 
     const kontaktBlock = document.querySelector("#kontakt p");
-    if (kontaktBlock && projekt.manager_email && projekt.manager_name) {
+    if (kontaktBlock) {
         kontaktBlock.innerHTML = `
-      <span class="editable" contenteditable="true">${projekt.manager_name ?? ""}</span><br>
-      <span class="editable" contenteditable="true">${projekt.manager_email ?? ""}</span>
+      <span class="editable" contenteditable="true">${pManagerName}</span><br>
+      <span class="editable" contenteditable="true">${pManagerEmail}</span>
     `;
     }
-
     renderDatenquellen(projekt.datenquellen);
 }
 

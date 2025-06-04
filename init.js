@@ -49,7 +49,8 @@ export function initializeData(projectData, datenquellenData) {
     const alleDatenquellen = datenquellenManager.getAll();
 
     alleProjekte.forEach(projekt => {
-        const anzahl = Math.floor(Math.random() * alleDatenquellen.length) + 1;
+        const maxQuellen = 4;
+        const anzahl = Math.floor(Math.random() * Math.min(maxQuellen, alleDatenquellen.length)) + 1;
         const ausgewaehlt = shuffleArray(alleDatenquellen).slice(0, anzahl);
 
         ausgewaehlt.forEach(dq => {
@@ -57,7 +58,9 @@ export function initializeData(projectData, datenquellenData) {
         });
     });
 
-    console.log(projektManager);
+
+    console.log("Projektmanager\n", projektManager);
+    console.log("Datenquellenmanager\n", datenquellenManager);
     window.projektManager = projektManager;
     window.datenquellenManager = datenquellenManager;
 }
