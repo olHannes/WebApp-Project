@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Projektportal für Umweltprojekte - didaktisches Semesterprojekt"
-    />
+    <meta name="description" content="Projektportal für Umweltprojekte - didaktisches Semesterprojekt" />
     <meta name="author" content="Student Hannes Olschok" />
     <title>Datenanzeige</title>
 
     <!-- Leaflet imports -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <!-- chart.js imports -->
@@ -24,190 +19,135 @@
     <script src="../exampleData/WBA_2025_Prak7_datasets.js"></script>
     <script src="../exampleData/WBA_2025_Prak7_datasources.js"></script>
     <script src="../exampleData/WBA_2025_Prak7_projects.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <a id="top"></a>
     <header>
-      <picture>
-        <source media="(min-width: 1920px)" srcset="header1920x200.png" />
-        <source media="(min-width: 1280px)" srcset="header1280x133.png" />
-        <source media="(min-width: 640px)" srcset="header640x67.png" />
-        <img src="header320x34.png" alt="Header" />
-      </picture>
+        <picture>
+            <source media="(min-width: 1920px)" srcset="header1920x200.png" />
+            <source media="(min-width: 1280px)" srcset="header1280x133.png" />
+            <source media="(min-width: 640px)" srcset="header640x67.png" />
+            <img src="header320x34.png" alt="Header" />
+        </picture>
     </header>
     <nav>
-      <a href="../index.html"
-        ><img src="../images/startseite.svg" alt="Startseite" id="startpageBtn"
-      /></a>
-      <a href="../projectList/projectList.html">Projektliste</a>
-      <a href="../dataView/dataView.html">Datenquellenliste</a>
+        <a href="../index.html"><img src="../images/startseite.svg" alt="Startseite" id="startpageBtn" /></a>
+        <a href="../projectList/projectList.html">Projektliste</a>
+        <a href="../dataView/dataView.html">Datenquellenliste</a>
     </nav>
 
-    <form
-      action="http://localhost"
-      method="POST"
-      id="dataSource-form"
-      style="display: none"
-    >
-      <label for="beschreibungA">Beschreibung:</label><br />
-      <input
-        type="text"
-        id="beschreibungA"
-        name="beschreibungA"
-        placeholder="Kurzbeschreibung A ..."
-      /><br />
+    <form action="http://localhost" method="POST" id="dataSource-form" style="display: none">
+        <label for="beschreibungA">Beschreibung:</label><br />
+        <input type="text" id="beschreibungA" name="beschreibungA" placeholder="Kurzbeschreibung A ..." /><br />
 
-      <label for="quelleA">Quelle:</label><br />
-      <input
-        type="text"
-        id="quelleA"
-        name="quelleA"
-        placeholder="https://quelle.de"
-      /><br />
+        <label for="quelleA">Quelle:</label><br />
+        <input type="text" id="quelleA" name="quelleA" placeholder="https://quelle.de" /><br />
 
-      <label for="Datenstand A">Datenstand:</label><br />
-      <input type="date" id="dateA" name="dateA" />
-      <button
-        onclick="document.getElementById('dataSource-form').style.display='none'"
-        type="submit"
-      >
-        Speichern
-      </button>
+        <label for="Datenstand A">Datenstand:</label><br />
+        <input type="date" id="dateA" name="dateA" />
+        <button onclick="document.getElementById('dataSource-form').style.display='none'" type="submit">
+            Speichern
+        </button>
     </form>
 
     <main>
-      <section>
-        <article>
-          <header>
-            <h2>Sensornetz A</h2>
-            <p class="dataSource">
-              Kurzbeschreibung:<br />Lorem ipsum dolor sit amet, consetetur
-              sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-            </p>
-            <p>Aktualisiert: 01.01.2025</p>
-            <a href="https://quelle.de" target="_blank">Zur Quelle</a>
-            <p>Lizenz: CC-BY</p>
-          </header>
+        <section>
+            <article>
+                <header>
+                    <h2 id="DsTitle">Sensornetz A</h2>
+                    <p class="dataSource">
+                        Kurzbeschreibung:<br />
+                    <p id="DsShortDescription">Lorem ipsum dolor sit amet, consetetur
+                        sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                    </p>
+                    </p>
+                    <p>
+                        Aktualisiert: 
+                        <span id="DsDate">01.01.2025</span>
+                    </p>
+                    <a id="DsLink" href="https://quelle.de" target="_blank">Zur Quelle</a>
+                    <p>
+                        Lizenz: 
+                        <span id="DsLicense">CC-BY</span>
+                    </p>
+                </header>
 
-          <ol>
-            <li>Seite aufrufen</li>
-            <li>Link kopieren</li>
-            <li>Einfügen</li>
-          </ol>
+                <ol>
+                    <li>Seite aufrufen</li>
+                    <li>Link kopieren</li>
+                    <li>Einfügen</li>
+                </ol>
 
-          <div class="tableWrapper">
-            <table>
-              <tr>
-                <th>Datum</th>
-                <th>Temperatur</th>
-                <th>Luftfeuchte</th>
-              </tr>
-              <tr>
-                <td>01.01.2025</td>
-                <td>5°C</td>
-                <td>80%</td>
-              </tr>
-              <tr>
-                <td>02.01.2025</td>
-                <td>6°C</td>
-                <td>75%</td>
-              </tr>
-              <tr>
-                <td>03.01.2025</td>
-                <td>6°C</td>
-                <td>70%</td>
-              </tr>
-              <tr>
-                <td>04.01.2025</td>
-                <td>6°C</td>
-                <td>60%</td>
-              </tr>
-            </table>
-          </div>
+                <div class="tableWrapper">
+                    <table>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Temperatur</th>
+                            <th>Luftfeuchte</th>
+                        </tr>
+                        <tr>
+                            <td>01.01.2025</td>
+                            <td>5°C</td>
+                            <td>80%</td>
+                        </tr>
+                        <tr>
+                            <td>02.01.2025</td>
+                            <td>6°C</td>
+                            <td>75%</td>
+                        </tr>
+                        <tr>
+                            <td>03.01.2025</td>
+                            <td>6°C</td>
+                            <td>70%</td>
+                        </tr>
+                        <tr>
+                            <td>04.01.2025</td>
+                            <td>6°C</td>
+                            <td>60%</td>
+                        </tr>
+                    </table>
+                </div>
 
-          <div
-            id="map"
-            style="height: 400px; width: 100%"
-            class="sourceMedia"
-          ></div>
+                <div id="map" style="height: 400px; width: 100%" class="sourceMedia"></div>
 
-          <video controls src="anleitung.mp4" class="sourceMedia"></video>
+                <video controls src="anleitung.mp4" class="sourceMedia"></video>
 
-          <canvas id="diagramm"></canvas>
+                <canvas id="diagramm"></canvas>
 
-          <footer>Datenstand: 02.01.2025</footer>
-          <button
-            onclick="document.getElementById('dataSource-form').style.display='block';"
-          >
-            Daten ändern
-          </button>
-        </article>
-      </section>
+                <footer>Datenstand: 02.01.2025</footer>
+                <button onclick="document.getElementById('dataSource-form').style.display='block';">
+                    Daten ändern
+                </button>
+            </article>
+        </section>
     </main>
 
     <footer>
-      <a href="impressum.html">Impressum</a> |
-      <a href="datenschutz.html">Datenschutzerklärung</a> |
-      <a href="haftung.html">Haftungsausschluss</a><br />
-      &copy; didaktisches Semesterprojekt 2025<br />
+        <a href="impressum.html">Impressum</a> |
+        <a href="datenschutz.html">Datenschutzerklärung</a> |
+        <a href="haftung.html">Haftungsausschluss</a><br />
+        &copy; didaktisches Semesterprojekt 2025<br />
     </footer>
     <a href="#top" id="topBtn">Zum Seitenanfang</a>
 
-    <script type="module">
-      import { initMap, showUserLocation, addDataPoint } from "./mapModule.js";
-      import { initChart, addDatasetToChart } from "./chartModule.js";
-      import { Datenquelle, Datensatz } from "../models.js";
+    <script type="module" src="./dataView.js"></script>
+</body>
 
-      initMap();
-      showUserLocation();
-
-      initChart();
-
-      const dsRaw = window["datasources"].find((d) => d.id === 11);
-      const testDatasource = new Datenquelle(
-        dsRaw.id,
-        dsRaw.title,
-        dsRaw.short_description,
-        dsRaw.long_description,
-        dsRaw.update_date,
-        dsRaw.data_description_url,
-        dsRaw.data_api_url,
-        dsRaw.license,
-        parseInt(dsRaw.status_code)
-      );
-
-      const datensaetze = window["datasets"];
-
-      const datensatzObjekte = datensaetze.map((raw) => {
-        const ds = new Datensatz(raw.id, raw.pos_lat, raw.pos_lon);
-
-        for (const key in raw) {
-          ds.setAttribute(key, raw[key]);
-        }
-        const popupText = `ID: ${ds.id}, Temp.: ${raw.temp.toFixed(2)}`;
-        addDataPoint(ds.latitude, ds.longitude, popupText);
-
-        testDatasource.addDatensatz(ds);
-
-        return ds;
-      });
-
-      addDatasetToChart(datensatzObjekte);
-    </script>
-  </body>
-
-  <style>
+<style>
     article {
-      width: auto;
-      max-width: 95%;
+        width: auto;
+        max-width: 95%;
     }
+
     article p {
-      margin-bottom: 5px;
+        margin-bottom: 5px;
     }
+
     .sourceMedia {
-      max-width: none;
-      width: 90%;
+        max-width: none;
+        width: 90%;
     }
-  </style>
+</style>
+
 </html>
