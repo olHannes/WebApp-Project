@@ -1,13 +1,40 @@
+import { initializeData } from "../init.js";
+
 function getProjectIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get("id");
+}
+
+
+function renderDatenquellen(datenquellen) {
+    const container = document.querySelector('#datenquellen .data-list');
+    container.innerHTML = '';
+
+    datenquellen.forEach(dq => {
+        const li = document.createElement('li');
+
+        const title = dq.title ?? 'Ohne Titel';
+        const description = dq.shortDescription ?? 'Keine Kurzbeschreibung verfügbar';
+        const updateDate = dq.updateDate instanceof Date && !isNaN(dq.updateDate)
+            ? dq.updateDate.toLocaleDateString('de-DE')
+            : 'Unbekannt';
+        const id = dq.id;
+
+        li.innerHTML = `
+            <strong>${title}</strong><br />
+            ${description}<br />
+            <em>Aktualisiert: ${updateDate}</em><br />
+            <a href="../dataView/dataView.html?id=${encodeURIComponent(id)}">Zur Anzeige</a>
+        `;
+        container.appendChild(li);
+    });
 }
 
 function initFilter() {
     const projectId = getProjectIdFromUrl();
     if (!projectId) return;
 
-    const projects = window["projects"];
+    projects = window.projektManager.getAll();
 
     const projekt = projects.find(p => String(p.id) === projectId);
     if (!projekt) {
@@ -32,7 +59,11 @@ function initFilter() {
     `;
     }
 
-    //Datenquellen dynamisch anzeigen
+    renderDatenquellen(projekt.datenquellen);
 }
 
-document.addEventListener("DOMContentLoaded", initFilter);
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeData(window['projects'], window['datasources']);
+    initFilter();
+});
