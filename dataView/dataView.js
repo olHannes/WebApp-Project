@@ -44,11 +44,8 @@ addDatasetToChart(datensatzObjekte);
 
 function showDatasource() {
     let tempDs = getDatasource();
-    if(tempDs){
-        const DS = tempDs[0];
-    }else {
-        return;
-    }
+    const DS = tempDs? tempDs[0]: null;
+
     if (!DS) {
         console.warn("Keine Datenquelle gefunden.");
         return;
