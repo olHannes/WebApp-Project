@@ -76,8 +76,18 @@ function shuffleArray(array) {
 
 
 export function addRandDatasources(exampleData) {
+    let data = [];
+    exampleData.forEach(element => {
+        let tempData = new Datensatz(element.id, element.pos_lat, element.pos_lon);
+
+        for (const key in element) {
+            tempData.setAttribute(key, element[key]);
+        }
+        data.push(tempData);
+    });
+
     const datasources = window.datenquellenManager.getAll();
-    const total = exampleData.length;
+    const total = data.length;
 
     datasources.forEach(datasource => {
         const numToAdd = Math.floor(Math.random() * 15) + 1;
@@ -91,7 +101,7 @@ export function addRandDatasources(exampleData) {
         [...usedIndices]
             .sort((a, b) => a - b)
             .forEach(index => {
-                const ds = exampleData[index];
+                const ds = data[index];
                 datasource.addDatensatz(ds);
             });
     });

@@ -3,43 +3,6 @@ import { initChart, addDatasetToChart } from "./chartModule.js";
 import { Datenquelle, Datensatz } from "../models.js";
 import { initializeData, addRandDatasources } from "../init.js";
 
-initMap();
-showUserLocation();
-
-initChart();
-
-const dsRaw = window["datasources"].find((d) => d.id === 11);
-const testDatasource = new Datenquelle(
-    dsRaw.id,
-    dsRaw.title,
-    dsRaw.short_description,
-    dsRaw.long_description,
-    dsRaw.update_date,
-    dsRaw.data_description_url,
-    dsRaw.data_api_url,
-    dsRaw.license,
-    parseInt(dsRaw.status_code)
-);
-
-const datensaetze = window["datasets"];
-
-const datensatzObjekte = datensaetze.map((raw) => {
-    const ds = new Datensatz(raw.id, raw.pos_lat, raw.pos_lon);
-
-    for (const key in raw) {
-        ds.setAttribute(key, raw[key]);
-    }
-
-    const popupText = `ID: ${ds.id}, Temp.: ${raw.temp.toFixed(2)}`;
-    addDataPoint(ds.latitude, ds.longitude, popupText);
-
-    testDatasource.addDatensatz(ds);
-
-    return ds;
-});
-
-addDatasetToChart(datensatzObjekte);
-
 
 
 function showDatasource() {
@@ -91,8 +54,27 @@ function showDatasource() {
     }
     document.getElementById('DsLicense').innerText = dLicense;
 
+    const datasets = DS.datensaetze;
+    if(datasets){
+        renderExampleDataMap(datasets);
+        renderExampleDataChart(datasets);
+    }    
 }
 
+function renderExampleDataMap(datasets){
+    initMap();
+    showUserLocation();
+
+    datasets.forEach(element => {
+        const popupText = `ID: ${element.id}, Temp.: ${element.attributes.temp.toFixed(2)}`;
+        addDataPoint(element.latitude, element.longitude, popupText);
+    });
+}
+
+function renderExampleDataChart(datasets){
+    initChart("Temperature (°C)");
+    addDatasetToChart(datasets);
+}
 
 
 function getDatasourceIdFromURL() {

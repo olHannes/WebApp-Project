@@ -1,6 +1,7 @@
 let map;
 
 export function initMap() {
+  document.getElementById('map').style.display="block";
   map = L.map('map').setView([51.1657, 10.4515], 6); //initial view is Germany
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -8,7 +9,7 @@ export function initMap() {
   }).addTo(map);
 }
 
-export function addDataPoint(lat, lng, popupText = 'Neuer Eintrag') {
+  export function addDataPoint(lat, lng, popupText = 'Neuer Eintrag') {
   if (!map) return;
   const marker = L.marker([lat, lng]).addTo(map);
   marker.bindPopup(popupText).openPopup();
