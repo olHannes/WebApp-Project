@@ -73,3 +73,8 @@ function shuffleArray(array) {
     }
     return arr;
 }
+
+
+export function addRandDatasources(datsources){
+    console.log("Datensaetze: ", datsources);
+}

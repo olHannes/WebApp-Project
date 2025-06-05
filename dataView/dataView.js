@@ -1,6 +1,7 @@
 import { initMap, showUserLocation, addDataPoint } from "./mapModule.js";
 import { initChart, addDatasetToChart } from "./chartModule.js";
 import { Datenquelle, Datensatz } from "../models.js";
+import { initializeData, addRandDatasources } from "../init.js";
 
 initMap();
 showUserLocation();
@@ -41,41 +42,80 @@ addDatasetToChart(datensatzObjekte);
 
 
 
+function showDatasource() {
+    let tempDs = getDatasource();
+    if(tempDs){
+        const DS = tempDs[0];
+    }else {
+        return;
+    }
+    if (!DS) {
+        console.warn("Keine Datenquelle gefunden.");
+        return;
+    }
+
+    const dTitle = DS.title || "Kein Titel";
+    const dShortDesc = DS.shortDescription || "Keine Kurzbeschreibung verfügbar";
+
+    let formattedDate = "Unbekannt";
+    try {
+        const dUpdate = new Date(DS.updateDate);
+        if (!isNaN(dUpdate)) {
+            formattedDate = dUpdate.toLocaleDateString("de-DE", {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+    } catch (e) {
+        console.warn("Ungültiges Datum:", DS.updateDate);
+    }
+
+    const dApi = DS.apiUrl || null;
+    const dLicense = DS.license || "Nicht verfügbar";
+
+    document.getElementById('DsTitle').innerText = dTitle;
+    document.getElementById('DsShortDescription').innerText = dShortDesc;
+    document.getElementById('DsDate').innerText = formattedDate;
+    
+    const elLink = document.getElementById('DsLink');
+    if (elLink) {
+        if (dApi) {
+            elLink.href = dApi;
+            elLink.innerText = "Zur Quelle";
+            elLink.style.pointerEvents = "auto";
+            elLink.style.color = "";
+        } else {
+            elLink.href = "#";
+            elLink.innerText = "Keine Quelle verfügbar";
+            elLink.style.pointerEvents = "none";
+            elLink.style.color = "gray";
+        }
+    }
+    document.getElementById('DsLicense').innerText = dLicense;
+
+}
+
 
 
 function getDatasourceIdFromURL() {
     const params = new URLSearchParams(window.location.search);
-    return params.get("id");
+    return parseInt(params.get("id"));
 }
 
-
-function showDatasource(){
-    const DS = getDatasource();
-    if(!DS) return;
-
-    console.log("found Datasource:\n", DS);
-}
 
 function getDatasource(){
     const currentId = getDatasourceIdFromURL();
     if(!currentId) return;
 
-    const datasources = window['datasources'];
-    const searchDS = datasources.find((d) => d.id == currentId);
-    if(!searchDS) return;
-
-    const currentDatasource = new Datenquelle(
-        searchDS.id,
-        searchDS.title,
-        searchDS.short_description,
-        searchDS.long_description,
-        null,
-        searchDS.data_description_url,
-        searchDS.data_api_url,
-        searchDS.license,
-        searchDS.status_code
-    )
-    return currentDatasource;
+    const datasources = window.datenquellenManager;
+    const searchDS = datasources.suche("id", currentId);
+    return searchDS;
 }
 
-document.addEventListener("DOMContentLoaded", showDatasource);
+
+document.addEventListener("DOMContentLoaded", () => {
+    initializeData(window['projects'], window['datasources']);
+    addRandDatasources(window['datasets']);
+    showDatasource();
+});

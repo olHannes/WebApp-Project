@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- chart.js imports -->
+    <!-- Chart.js import -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Eigene Dateien -->
     <link rel="stylesheet" href="../style.css" />
     <script src="../exampleData/WBA_2025_Prak7_datasets.js"></script>
     <script src="../exampleData/WBA_2025_Prak7_datasources.js"></script>
@@ -23,6 +24,7 @@
 
 <body>
     <a id="top"></a>
+
     <header>
         <picture>
             <source media="(min-width: 1920px)" srcset="header1920x200.png" />
@@ -31,12 +33,16 @@
             <img src="header320x34.png" alt="Header" />
         </picture>
     </header>
+
     <nav>
-        <a href="../index.html"><img src="../images/startseite.svg" alt="Startseite" id="startpageBtn" /></a>
+        <a href="../index.html">
+            <img src="../images/startseite.svg" alt="Startseite" id="startpageBtn" />
+        </a>
         <a href="../projectList/projectList.html">Projektliste</a>
         <a href="../dataView/dataView.html">Datenquellenliste</a>
     </nav>
 
+    <!-- Verstecktes Formular -->
     <form action="http://localhost" method="POST" id="dataSource-form" style="display: none">
         <label for="beschreibungA">Beschreibung:</label><br />
         <input type="text" id="beschreibungA" name="beschreibungA" placeholder="Kurzbeschreibung A ..." /><br />
@@ -44,9 +50,10 @@
         <label for="quelleA">Quelle:</label><br />
         <input type="text" id="quelleA" name="quelleA" placeholder="https://quelle.de" /><br />
 
-        <label for="Datenstand A">Datenstand:</label><br />
-        <input type="date" id="dateA" name="dateA" />
-        <button onclick="document.getElementById('dataSource-form').style.display='none'" type="submit">
+        <label for="dateA">Datenstand:</label><br />
+        <input type="date" id="dateA" name="dateA" /><br />
+
+        <button type="submit" onclick="document.getElementById('dataSource-form').style.display='none'">
             Speichern
         </button>
     </form>
@@ -55,22 +62,13 @@
         <section>
             <article>
                 <header>
-                    <h2 id="DsTitle">Sensornetz A</h2>
-                    <p class="dataSource">
-                        Kurzbeschreibung:<br />
-                    <p id="DsShortDescription">Lorem ipsum dolor sit amet, consetetur
-                        sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                    <h2 id="DsTitle">Kein Titel</h2>
+                    <p class="dataSource">Kurzbeschreibung:<br />
+                        <span id="DsShortDescription">Keine Kurzbeschreibung gefunden.</span>
                     </p>
-                    </p>
-                    <p>
-                        Aktualisiert: 
-                        <span id="DsDate">01.01.2025</span>
-                    </p>
-                    <a id="DsLink" href="https://quelle.de" target="_blank">Zur Quelle</a>
-                    <p>
-                        Lizenz: 
-                        <span id="DsLicense">CC-BY</span>
-                    </p>
+                    <p>Aktualisiert: <span id="DsDate">00.00.0000</span></p>
+                    <a id="DsLink" href="https://quelle.de" target="_blank">Quellen URL</a>
+                    <p>Lizenz: <span id="DsLicense">XX-XX</span></p>
                 </header>
 
                 <ol>
@@ -81,41 +79,48 @@
 
                 <div class="tableWrapper">
                     <table>
-                        <tr>
-                            <th>Datum</th>
-                            <th>Temperatur</th>
-                            <th>Luftfeuchte</th>
-                        </tr>
-                        <tr>
-                            <td>01.01.2025</td>
-                            <td>5°C</td>
-                            <td>80%</td>
-                        </tr>
-                        <tr>
-                            <td>02.01.2025</td>
-                            <td>6°C</td>
-                            <td>75%</td>
-                        </tr>
-                        <tr>
-                            <td>03.01.2025</td>
-                            <td>6°C</td>
-                            <td>70%</td>
-                        </tr>
-                        <tr>
-                            <td>04.01.2025</td>
-                            <td>6°C</td>
-                            <td>60%</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Temperatur</th>
+                                <th>Luftfeuchte</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01.01.2025</td>
+                                <td>5°C</td>
+                                <td>80%</td>
+                            </tr>
+                            <tr>
+                                <td>02.01.2025</td>
+                                <td>6°C</td>
+                                <td>75%</td>
+                            </tr>
+                            <tr>
+                                <td>03.01.2025</td>
+                                <td>6°C</td>
+                                <td>70%</td>
+                            </tr>
+                            <tr>
+                                <td>04.01.2025</td>
+                                <td>6°C</td>
+                                <td>60%</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
 
-                <div id="map" style="height: 400px; width: 100%" class="sourceMedia"></div>
+                <div id="map" class="sourceMedia" style="height: 400px; width: 100%;"></div>
 
                 <video controls src="anleitung.mp4" class="sourceMedia"></video>
 
                 <canvas id="diagramm"></canvas>
 
-                <footer>Datenstand: 02.01.2025</footer>
+                <footer>
+                    Datenstand: 00.00.0000
+                </footer>
+
                 <button onclick="document.getElementById('dataSource-form').style.display='block';">
                     Daten ändern
                 </button>
@@ -127,8 +132,9 @@
         <a href="impressum.html">Impressum</a> |
         <a href="datenschutz.html">Datenschutzerklärung</a> |
         <a href="haftung.html">Haftungsausschluss</a><br />
-        &copy; didaktisches Semesterprojekt 2025<br />
+        &copy; didaktisches Semesterprojekt 2025
     </footer>
+
     <a href="#top" id="topBtn">Zum Seitenanfang</a>
 
     <script type="module" src="./dataView.js"></script>
