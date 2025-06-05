@@ -19,7 +19,7 @@ function buildProjektFromJson(json) {
         json.id,
         json.title,
         json.short_description,
-        json.long_description,
+        json.long_descriptions,
         json.logo_url,
         json.start_date,
         json.end_date,
