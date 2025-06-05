@@ -62,13 +62,19 @@ function showDatasource() {
 }
 
 function renderExampleDataMap(datasets){
+    let foundData = false;
     initMap();
     showUserLocation();
 
     datasets.forEach(element => {
+        if(element.latitude)
+            foundData=true;
         const popupText = `ID: ${element.id}, Temp.: ${element.attributes.temp.toFixed(2)}`;
         addDataPoint(element.latitude, element.longitude, popupText);
     });
+    if(!foundData){
+        document.getElementById('map').style.display="none";
+    }
 }
 
 function renderExampleDataChart(datasets){

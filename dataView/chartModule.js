@@ -2,11 +2,10 @@ let barChart;
 let chartData;
 
 export function initChart(dataType = "Temperature (°C)") {
-  document.getElementById('diagramm').style.display="block";
   if (barChart) {
     barChart.destroy();
   }
-
+    const ctx = document.getElementById("diagramm").getContext("2d");
   chartData = {
     labels: [],
     datasets: [
@@ -19,8 +18,6 @@ export function initChart(dataType = "Temperature (°C)") {
       },
     ],
   };
-
-  const ctx = document.getElementById("diagramm").getContext("2d");
 
   barChart = new Chart(ctx, {
     type: "bar",
@@ -42,11 +39,17 @@ export function initChart(dataType = "Temperature (°C)") {
 }
 
 export function addDatasetToChart(datasetArray) {
+  let foundData = false;
   datasetArray.forEach((data) => {
     if (data.attributes.ts && typeof data.attributes.temp === "number") {
+      foundData = true;
       chartData.labels.push(data.attributes.ts);
       chartData.datasets[0].data.push(data.attributes.temp);
     }
   });
-  barChart.update();
+
+  if (foundData) {
+    document.getElementById("diagramm").style.display = "block";
+    barChart.update();
+  }
 }

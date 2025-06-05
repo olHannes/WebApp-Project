@@ -1,7 +1,6 @@
 let map;
 
 export function initMap() {
-  document.getElementById('map').style.display="block";
   map = L.map('map').setView([51.1657, 10.4515], 6); //initial view is Germany
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -24,7 +23,7 @@ export function showUserLocation() {
         const { latitude, longitude } = position.coords;
         const userMarker = L.marker([latitude, longitude]).addTo(map);
         userMarker.bindPopup('Dein Standort').openPopup();
-        map.setView([latitude, longitude], 13);
+        map.setView([latitude, longitude], 11);
       },
       () => alert("Standort konnte nicht ermittelt werden.")
     );
