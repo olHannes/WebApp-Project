@@ -42,7 +42,7 @@ function initFilter() {
     }
     const pTitle = projekt.title ?? "Ohne Titel";
     const pShortDescription = projekt.shortDescription ?? "Keine Kurzbeschreibung verfügbar";
-    const pLongDescription = projekt.long_description ?? "Keine Langbeschreibung verfügbar";
+    const pLongDescription = projekt.longDescription ?? "Keine Langbeschreibung verfügbar";
     const pManagerName = projekt.contactInfo.manager_name ?? "unbekannt";
     const pManagerEmail = projekt.contactInfo.manager_email ?? "unbekannt";
 

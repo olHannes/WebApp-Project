@@ -28,6 +28,14 @@ class Entity {
       throw new Error("Short description must be ≤ 255 characters");
     this._shortDescription = val;
   }
+
+  set longDescription(desc){
+    this._longDescription = desc;
+  }
+
+  get longDescription(){
+    return this._longDescription;
+  }
 }
 
 class Projekt extends Entity {

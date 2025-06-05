@@ -1,5 +1,6 @@
 import { initMap, showUserLocation, addDataPoint } from "./mapModule.js";
 import { initChart, addDatasetToChart } from "./chartModule.js";
+import { Datenquelle, Datensatz } from "../models.js";
 import { initializeData, addRandDatasources } from "../init.js";
 
 
