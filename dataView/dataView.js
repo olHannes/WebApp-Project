@@ -131,6 +131,11 @@ function renderExampleDataTable(datasets) {
     const maxRows = 5;
     const rowCount = Math.min(maxRows, datasets.length);
 
+    if(rowCount == 0){
+        document.getElementById('tableWrapper').style.display="none";
+        return;
+    }
+
     for (let i = 0; i < rowCount; i++) {
         const data = datasets[i];
         const attrs = data.attributes;
