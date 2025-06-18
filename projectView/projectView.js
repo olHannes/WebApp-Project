@@ -1,5 +1,8 @@
 import { initializeData } from "../init.js";
 
+let projects = [];
+let projectId = null;
+
 function getProjectIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get("id");
@@ -24,6 +27,7 @@ function renderDatenquellen(datenquellen) {
             ${description}<br />
             <em>Aktualisiert: ${updateDate}</em><br />
             <a href="../dataView/dataView.html?id=${encodeURIComponent(id)}">Zur Anzeige</a>
+            <span class="status" data-url="${dq.url ?? ''}">Status: noch nicht geprüft</span>
         `;
         container.appendChild(li);
     });
@@ -66,7 +70,48 @@ function initFilter() {
 }
 
 
+async function checkSource(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return { url, status: response.status, ok: response.ok };
+    } catch (error) {
+        return { url, status: null, ok: false };
+    }
+}
+
+async function checkAccess() {
+    projectId = getProjectIdFromUrl();
+    if (!projectId) return;
+
+    const projekt = projects.find(p => String(p.id) === projectId);
+    if (!projekt) return;
+
+    const datenquellen = projekt.datenquellen;
+    if (!datenquellen || datenquellen.length === 0) return;
+    console.log(datenquellen);
+    const checkPromises = datenquellen.map(dq => {
+        return checkSource(dq.url ?? '').then(result => {
+            return { id: dq.id, ...result };
+        });
+    });
+
+    const results = await Promise.all(checkPromises);
+
+    results.forEach(({ id, url, status, ok }) => {
+        const statusSpan = document.querySelector(`.status[data-url="${url}"]`);
+        if (statusSpan) {
+            statusSpan.textContent = ok
+                ? `Status: erreichbar (HTTP ${status})`
+                : `Status: nicht erreichbar`;
+            statusSpan.style.color = ok ? 'green' : 'red';
+        }
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     initializeData(window['projects'], window['datasources']);
+    projects = window.projects;
     initFilter();
+    checkAccess();
 });
