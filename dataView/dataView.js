@@ -133,7 +133,6 @@ function renderExampleDataTable(datasets) {
 
     if(rowCount == 0){
         document.getElementById('tableWrapper').style.display="none";
-        return;
     }
 
     for (let i = 0; i < rowCount; i++) {
