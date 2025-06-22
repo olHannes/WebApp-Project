@@ -1,6 +1,20 @@
 import { Projekt, Datenquelle, Datensatz, ObjectManager } from './models.js';
 
 function buildDatenquelleFromJson(json) {
+    let ds = new Datenquelle(
+        json.id,
+        json.title,
+        json.short_description,
+        json.long_descriptions,
+        json.update_date,
+        json.description_url,
+        json.api_url,
+        json.license,
+        json.status_code
+    
+    );
+    ds.data_api_url = json.data_api_url;
+    return ds;
     return new Datenquelle(
         json.id,
         json.title,
@@ -105,4 +119,52 @@ export function addRandDatasources(exampleData) {
                 datasource.addDatensatz(ds);
             });
     });
+}
+
+
+
+
+export async function loadExternData() {
+  try {
+    const datasourceUrl = "https://scl.fh-bielefeld.de/SmartDataProjects/smartdata/records/datasources?storage=smartmonitoring";
+    const datasourceResponse = await fetch(datasourceUrl);
+    const datasourceData = await datasourceResponse.json();
+
+    initializeData([], datasourceData.records);
+    const ds = window.datenquellenManager;
+
+    for (const element of ds.items) {
+      const sensorDataUrl = element.data_api_url;
+
+      if (sensorDataUrl) {
+        const sensorResponse = await fetch(sensorDataUrl);
+        const sensorData = await sensorResponse.json();
+
+        let data = [];
+
+        sensorData.records.forEach(record => {
+          let tempData = new Datensatz(record.id, record.pos_lat, record.pos_lon);
+
+          for (const key in record) {
+            tempData.setAttribute(key, record[key]);
+          }
+
+          data.push(tempData);
+        });
+
+        const matchingDatasource = ds.items.find(d => d.id === 11);
+
+        if (matchingDatasource) {
+          data.forEach(datensatz => matchingDatasource.addDatensatz(datensatz));
+        } else {
+          console.warn("Keine Datenquelle mit ID 11 gefunden.");
+        }
+      }
+    }
+
+    return;
+  } catch (error) {
+    console.error("Fehler beim Laden der externen Daten:", error);
+    throw error;
+  }
 }

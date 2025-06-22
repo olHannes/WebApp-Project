@@ -1,7 +1,7 @@
 import { initMap, showUserLocation, addDataPoint } from "./mapModule.js";
 import { initChart, addDatasetToChart } from "./chartModule.js";
 import { Datenquelle, Datensatz } from "../models.js";
-import { initializeData, addRandDatasources } from "../init.js";
+import { initializeData, addRandDatasources, loadExternData } from "../init.js";
 
 
 
@@ -174,8 +174,10 @@ function getDatasource(){
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializeData(window['projects'], window['datasources']);
-    addRandDatasources(window['datasets']);
+document.addEventListener("DOMContentLoaded", async () => {
+    //initializeData(window['projects'], window['datasources']);
+    //addRandDatasources(window['datasets']);
+    
+    await loadExternData();
     showDatasource();
 });
