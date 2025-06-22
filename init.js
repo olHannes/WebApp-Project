@@ -53,13 +53,16 @@ export function initializeData(projectData, datenquellenData) {
     const alleProjekte = projektManager.getAll();
     const alleDatenquellen = datenquellenManager.getAll();
 
+    const datenquelleMitId11 = alleDatenquellen.find(dq => dq.id === 11);
+
     alleProjekte.forEach(projekt => {
         const maxQuellen = 4;
-        //const anzahl = Math.floor(Math.random() * Math.min(maxQuellen, alleDatenquellen.length)) + 1;
-        const anzahl = alleDatenquellen.length;
-        //const ausgewaehlt = shuffleArray(alleDatenquellen).slice(0, anzahl);
-        const ausgewaehlt = alleDatenquellen;
+        const anzahl = Math.floor(Math.random() * Math.min(maxQuellen, alleDatenquellen.length)) + 1;
         
+        const ausgewaehlt = shuffleArray(alleDatenquellen).slice(0, anzahl);
+        if (!(ausgewaehlt.find(dq => dq.id === 11))){
+          ausgewaehlt.push(datenquelleMitId11);
+        }        
         ausgewaehlt.forEach(dq => {
             projekt.addDatenquelle(dq);
         });
