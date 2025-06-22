@@ -1,6 +1,7 @@
 import { Projekt, Datenquelle, Datensatz, ObjectManager } from './models.js';
 
 function buildDatenquelleFromJson(json) {
+
     let ds = new Datenquelle(
         json.id,
         json.title,
@@ -14,18 +15,8 @@ function buildDatenquelleFromJson(json) {
     
     );
     ds.data_api_url = json.data_api_url;
+    ds.data_description_url = json.data_description_url;
     return ds;
-    return new Datenquelle(
-        json.id,
-        json.title,
-        json.short_description,
-        json.long_descriptions,
-        json.update_date,
-        json.description_url,
-        json.api_url,
-        json.license,
-        json.status_code
-    );
 }
 
 function buildProjektFromJson(json) {
@@ -64,12 +55,15 @@ export function initializeData(projectData, datenquellenData) {
 
     alleProjekte.forEach(projekt => {
         const maxQuellen = 4;
-        const anzahl = Math.floor(Math.random() * Math.min(maxQuellen, alleDatenquellen.length)) + 1;
-        const ausgewaehlt = shuffleArray(alleDatenquellen).slice(0, anzahl);
-
+        //const anzahl = Math.floor(Math.random() * Math.min(maxQuellen, alleDatenquellen.length)) + 1;
+        const anzahl = alleDatenquellen.length;
+        //const ausgewaehlt = shuffleArray(alleDatenquellen).slice(0, anzahl);
+        const ausgewaehlt = alleDatenquellen;
+        
         ausgewaehlt.forEach(dq => {
             projekt.addDatenquelle(dq);
         });
+        
     });
 
 
@@ -85,6 +79,7 @@ function shuffleArray(array) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
+    
     return arr;
 }
 

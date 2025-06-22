@@ -27,7 +27,7 @@ function renderDatenquellen(datenquellen) {
             ${description}<br />
             <em>Aktualisiert: ${updateDate}</em><br />
             <a href="../dataView/dataView.html?id=${encodeURIComponent(id)}">Zur Anzeige</a>
-            <span class="status" data-url="${dq.url ?? ''}">Status: noch nicht geprüft</span>
+            <span class="status" data-id="${dq.id}" data-url="${dq.url ?? ''}">Status: noch nicht geprüft</span>
         `;
         container.appendChild(li);
     });
@@ -80,7 +80,7 @@ async function checkSource(url) {
 }
 
 async function checkAccess() {
-    projectId = getProjectIdFromUrl();
+    const projectId = getProjectIdFromUrl();
     if (!projectId) return;
 
     const projekt = projects.find(p => String(p.id) === projectId);
@@ -88,17 +88,21 @@ async function checkAccess() {
 
     const datenquellen = projekt.datenquellen;
     if (!datenquellen || datenquellen.length === 0) return;
-    console.log(datenquellen);
-    const checkPromises = datenquellen.map(dq => {
-        return checkSource(dq.url ?? '').then(result => {
-            return { id: dq.id, ...result };
-        });
+
+    const checkPromises = datenquellen.map(async dq => {
+        const url = dq.data_api_url ?? '';
+        if (!url) {
+            return { id: dq.id, url: '', status: 'Keine URL angegeben', ok: false };
+        }
+        const result = await checkSource(url);
+        return { id: dq.id, url, ...result };
     });
 
     const results = await Promise.all(checkPromises);
 
+    
     results.forEach(({ id, url, status, ok }) => {
-        const statusSpan = document.querySelector(`.status[data-url="${url}"]`);
+        const statusSpan = document.querySelector(`.status[data-id="${id}"]`);
         if (statusSpan) {
             statusSpan.textContent = ok
                 ? `Status: erreichbar (HTTP ${status})`
@@ -107,6 +111,7 @@ async function checkAccess() {
         }
     });
 }
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
