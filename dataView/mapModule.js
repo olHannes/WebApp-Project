@@ -1,6 +1,9 @@
 let map;
 
 export function initMap() {
+  if (map){
+    return map;
+  }
   map = L.map('map').setView([51.1657, 10.4515], 6); //initial view is Germany
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

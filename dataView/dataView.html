@@ -45,29 +45,28 @@
     <!-- Verstecktes Formular -->
     <form action="http://localhost" method="POST" id="dataSource-form" style="display: none; padding: 1em; border: 1px solid #ccc; margin: 1em 0;">
         <label for="titel">Titel:</label><br />
-        <input type="text" id="titel" name="titel" placeholder="Titel der Datenquelle" /><br /><br />
+        <input type="text" id="titel" name="titel" required placeholder="Titel der Datenquelle" /><br /><br />
 
         <label for="beschreibungA">Kurzbeschreibung:</label><br />
-        <input type="text" id="beschreibungA" name="beschreibungA" placeholder="Kurze Beschreibung ..." /><br /><br />
+        <input type="text" id="beschreibungA" name="beschreibungA" required placeholder="Kurze Beschreibung ..." /><br /><br />
 
         <label for="dateA">Aktualisierungsdatum:</label><br />
-        <input type="date" id="dateA" name="dateA" /><br /><br />
+        <input type="date" id="dateA" name="dateA" required /><br /><br />
 
         <label for="quelleA">Link zur Quelle:</label><br />
-        <input type="url" id="quelleA" name="quelleA" placeholder="https://quelle.de" /><br /><br />
+        <input type="url" id="quelleA" name="quelleA" required placeholder="https://quelle.de" /><br /><br />
 
         <label for="apiLink">Link zur API:</label><br />
-        <input type="url" id="apiLink" name="apiLink" placeholder="https://api.quelle.de" /><br /><br />
+        <input type="url" id="apiLink" name="apiLink" required placeholder="https://api.quelle.de" /><br /><br />
 
         <label for="lizenz">Datenlizenz:</label><br />
-        <input type="text" id="lizenz" name="lizenz" placeholder="z. B. CC BY 4.0" /><br /><br />
+        <input type="text" id="lizenz" name="lizenz" required placeholder="z. B. CC BY 4.0" /><br /><br />
 
         <label for="nutzung">Nutzungsanleitung:</label><br />
-        <textarea id="nutzung" name="nutzung" rows="4" placeholder="Hinweise zur Verwendung der Daten..."></textarea><br /><br />
+        <textarea id="nutzung" name="nutzung" rows="4" required placeholder="Hinweise zur Verwendung der Daten..."></textarea><br /><br />
 
-        <button type="submit" onclick="document.getElementById('dataSource-form').style.display='none'">
-            Speichern
-        </button>
+        <button id="submitBtn" type="submit">Speichern</button>
+
     </form>
 
 
@@ -75,16 +74,16 @@
         <section>
             <article>
                 <header>
-                    <h2 id="DsTitle">Keinen Titel gefunden</h2>
-                    <p class="dataSource">Kurzbeschreibung:<br />
+                    <h2 id="DsTitle"  >Keinen Titel gefunden</h2>
+                    <p class="dataSource"  >Kurzbeschreibung:<br />
                         <span id="DsShortDescription">Keine Kurzbeschreibung gefunden.</span>
                     </p>
-                    <p>Aktualisiert: <span id="DsDate">--.--.----</span></p>
-                    <a id="DsLink" href="https://quelle.de" target="_blank">URL nicht gefunden</a>
-                    <p>Lizenz: <span id="DsLicense">--_--</span></p>
+                    <p>Aktualisiert: <span id="DsDate"  >--.--.----</span></p>
+                    <a id="DsLink" href="https://quelle.de" target="_blank"  >URL nicht gefunden</a>
+                    <p>Lizenz: <span id="DsLicense"  >--_--</span></p>
                 </header>
 
-                <ol>
+                <ol id="userManual">
                     <li>Seite aufrufen</li>
                     <li>Link kopieren</li>
                     <li>Einfügen</li>
@@ -100,11 +99,11 @@
 
                 <canvas id="diagramm" style="display: none;"></canvas>
 
-                <footer>
+                <footer onclick="openForm();;">
                     Datenstand: --.--.----
                 </footer>
 
-                <button onclick="document.getElementById('dataSource-form').style.display='block';">
+                <button id="changeDataBtn">
                     Daten ändern
                 </button>
             </article>

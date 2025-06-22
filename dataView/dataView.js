@@ -82,6 +82,10 @@ function renderExampleDataMap(datasets){
 }
 
 function renderExampleDataChart(datasets){
+    if(!datasets || datasets.length === 0){
+        console.warn("Keine Beispieldaten vorhanden");
+        return;
+    }
     initChart("Temperature (°C)");
     addDatasetToChart(datasets);
 
@@ -174,10 +178,78 @@ function getDatasource(){
 }
 
 
+function openForm() {
+    document.getElementById("titel").value = document.getElementById("DsTitle").textContent;
+    document.getElementById("beschreibungA").value = document.getElementById("DsShortDescription").textContent;
+    document.getElementById("quelleA").value = document.getElementById("DsLink").href;
+    document.getElementById("lizenz").value = document.getElementById("DsLicense").textContent;
+    document.getElementById("nutzung").value = document.getElementById("userManual").textContent;
+    
+
+    const dsDateText = document.getElementById("DsDate").textContent.trim();
+
+    const [day, month, year] = dsDateText.split(".");
+    if (day && month && year) {
+        const htmlDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+        document.getElementById("dateA").value = htmlDate;
+    } else {
+        console.warn("Datum konnte nicht geparst werden:", dsDateText);
+    }
+
+    document.getElementById("dataSource-form").style.display = "block";
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const form = document.getElementById("dataSource-form");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Speichern...";
+
+        const formData = new FormData(form);
+        const payload = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch("http://localhost:3000/api/datasource", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            if (!res.ok) throw new Error("Serverfehler");
+
+            alert("Daten erfolgreich gespeichert.");
+            form.style.display = "none";
+        } catch (err) {
+            console.error(err);
+            alert("Fehler beim Speichern.");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Speichern";
+        }
+    });
+});
+
+
+
+
 document.addEventListener("DOMContentLoaded", async () => {
     //initializeData(window['projects'], window['datasources']);
     //addRandDatasources(window['datasets']);
     
     await loadExternData();
     showDatasource();
+
+    ["DsTitle", "DsShortDescription", "DsDate", "DsLink", "DsLicense", "changeDataBtn"]
+    .forEach(id => document.getElementById(id).addEventListener("click", openForm));
+
 });
