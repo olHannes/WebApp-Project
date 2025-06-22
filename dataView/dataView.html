@@ -43,20 +43,33 @@
     </nav>
 
     <!-- Verstecktes Formular -->
-    <form action="http://localhost" method="POST" id="dataSource-form" style="display: none">
-        <label for="beschreibungA">Beschreibung:</label><br />
-        <input type="text" id="beschreibungA" name="beschreibungA" placeholder="Kurzbeschreibung A ..." /><br />
+    <form action="http://localhost" method="POST" id="dataSource-form" style="display: none; padding: 1em; border: 1px solid #ccc; margin: 1em 0;">
+        <label for="titel">Titel:</label><br />
+        <input type="text" id="titel" name="titel" placeholder="Titel der Datenquelle" /><br /><br />
 
-        <label for="quelleA">Quelle:</label><br />
-        <input type="text" id="quelleA" name="quelleA" placeholder="https://quelle.de" /><br />
+        <label for="beschreibungA">Kurzbeschreibung:</label><br />
+        <input type="text" id="beschreibungA" name="beschreibungA" placeholder="Kurze Beschreibung ..." /><br /><br />
 
-        <label for="dateA">Datenstand:</label><br />
-        <input type="date" id="dateA" name="dateA" /><br />
+        <label for="dateA">Aktualisierungsdatum:</label><br />
+        <input type="date" id="dateA" name="dateA" /><br /><br />
+
+        <label for="quelleA">Link zur Quelle:</label><br />
+        <input type="url" id="quelleA" name="quelleA" placeholder="https://quelle.de" /><br /><br />
+
+        <label for="apiLink">Link zur API:</label><br />
+        <input type="url" id="apiLink" name="apiLink" placeholder="https://api.quelle.de" /><br /><br />
+
+        <label for="lizenz">Datenlizenz:</label><br />
+        <input type="text" id="lizenz" name="lizenz" placeholder="z. B. CC BY 4.0" /><br /><br />
+
+        <label for="nutzung">Nutzungsanleitung:</label><br />
+        <textarea id="nutzung" name="nutzung" rows="4" placeholder="Hinweise zur Verwendung der Daten..."></textarea><br /><br />
 
         <button type="submit" onclick="document.getElementById('dataSource-form').style.display='none'">
             Speichern
         </button>
     </form>
+
 
     <main>
         <section>
@@ -83,7 +96,7 @@
 
                 <div id="map" class="sourceMedia" style="height: 400px; width: 100%;"></div>
 
-                <!--<video controls src="anleitung.mp4" class="sourceMedia"></video> -->
+                <video controls src="anleitung.mp4" class="sourceMedia"></video>
 
                 <canvas id="diagramm" style="display: none;"></canvas>
 
