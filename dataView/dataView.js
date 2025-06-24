@@ -9,7 +9,7 @@ function showDatasource() {
     let tempDs = getDatasource();
     const DS = tempDs? tempDs[0]: null;
 
-    if (!DS) {
+    if (!DS) {  
         console.warn("Keine Datenquelle gefunden.");
         document.getElementById('map').style.display="none";
         return;
@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const payload = Object.fromEntries(formData.entries());
 
         try {
-            const res = await fetch("http://localhost:3000/api/datasource", {
+            const res = await fetch(`https://scl.fh-bielefeld.de/SmartDataProjects/smartdata/records/datasources/${getDatasourceIdFromURL()}?storage=smartmonitoring`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
