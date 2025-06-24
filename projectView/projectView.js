@@ -116,4 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
     projects = window.projects;
     initFilter();
     checkAccess();
+
+    setInterval(() => {
+        checkAccess();
+    }, 5000);
 });
