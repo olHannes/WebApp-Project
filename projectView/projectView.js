@@ -84,25 +84,21 @@ async function checkAccess() {
     if (!projectId) return;
 
     const projekt = projects.find(p => String(p.id) === projectId);
-    if (!projekt) return;
+    if (!projekt || !projekt.datenquellen) return;
 
-    const datenquellen = projekt.datenquellen;
-    if (!datenquellen || datenquellen.length === 0) return;
-
-    const checkPromises = datenquellen.map(async dq => {
+    projekt.datenquellen.forEach(async dq => {
         const url = dq.data_api_url ?? '';
+        const statusSpan = document.querySelector(`.status[data-id="${dq.id}"]`);
+
         if (!url) {
-            return { id: dq.id, url: '', status: 'Keine URL angegeben', ok: false };
+            if (statusSpan) {
+                statusSpan.textContent = 'Status: Keine URL angegeben';
+                statusSpan.style.color = 'gray';
+            }
+            return;
         }
-        const result = await checkSource(url);
-        return { id: dq.id, url, ...result };
-    });
 
-    const results = await Promise.all(checkPromises);
-
-    
-    results.forEach(({ id, url, status, ok }) => {
-        const statusSpan = document.querySelector(`.status[data-id="${id}"]`);
+        const { status, ok } = await checkSource(url);
         if (statusSpan) {
             statusSpan.textContent = ok
                 ? `Status: erreichbar (HTTP ${status})`
@@ -111,6 +107,7 @@ async function checkAccess() {
         }
     });
 }
+
 
 
 

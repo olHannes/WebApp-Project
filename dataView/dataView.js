@@ -34,7 +34,7 @@ function showDatasource() {
         console.warn("Ungültiges Datum:", DS.updateDate);
     }
 
-    const dApi = DS.apiUrl || null;
+    const dApi = DS.data_description_url || null;
     const dLicense = DS.license || "Nicht verfügbar";
 
     document.getElementById('DsTitle').innerText = dTitle;
@@ -181,6 +181,7 @@ function getDatasource(){
 function openForm() {
     document.getElementById("titel").value = document.getElementById("DsTitle").textContent;
     document.getElementById("beschreibungA").value = document.getElementById("DsShortDescription").textContent;
+    document.getElementById("quelleA").value = document.getElementById("DsLink").href;
     document.getElementById("quelleA").value = document.getElementById("DsLink").href;
     document.getElementById("lizenz").value = document.getElementById("DsLicense").textContent;
     document.getElementById("nutzung").value = document.getElementById("userManual").textContent;
