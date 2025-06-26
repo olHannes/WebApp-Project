@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //initializeData(window['projects'], window['datasources']);
     //addRandDatasources(window['datasets']);
     
-    online = navigator.online;
+    online = navigator.onLine;
 
     if(await loadExternData()){
         let tempDs = getDatasource();
@@ -336,7 +336,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function updateOnlineStatus() {
-    if(online != navigator.online && online == true){
+    console.log(navigator.onLine);
+    if(online != navigator.onLine && online == true){
         window.location.reload();
     }
 }
