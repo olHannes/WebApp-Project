@@ -1,6 +1,6 @@
 import { Projekt, Datenquelle, Datensatz, ObjectManager } from './models.js';
 
-function buildDatenquelleFromJson(json) {
+export function buildDatenquelleFromJson(json) {
 
     let ds = new Datenquelle(
         json.id,
@@ -161,9 +161,10 @@ export async function loadExternData() {
       }
     }
 
-    return;
+    return true;
   } catch (error) {
     console.error("Fehler beim Laden der externen Daten:", error);
-    throw error;
+    return false;
   }
+  return false;
 }

@@ -1,13 +1,11 @@
 import { initMap, showUserLocation, addDataPoint } from "./mapModule.js";
 import { initChart, addDatasetToChart } from "./chartModule.js";
-import { Datenquelle, Datensatz } from "../models.js";
-import { initializeData, addRandDatasources, loadExternData } from "../init.js";
+import { Datenquelle, Datensatz, ObjectManager } from "../models.js";
+import { initializeData, addRandDatasources, loadExternData, buildDatenquelleFromJson } from "../init.js";
 
 
 
-function showDatasource() {
-    let tempDs = getDatasource();
-    const DS = tempDs? tempDs[0]: null;
+function showDatasource(DS) {
 
     if (!DS) {  
         console.warn("Keine Datenquelle gefunden.");
@@ -63,7 +61,6 @@ function showDatasource() {
         renderExampleDataChart(datasets);
         renderExampleDataTable(datasets);
     }    
-    localSafeDatasource(DS);
 }
 
 function renderExampleDataMap(datasets){
@@ -168,7 +165,7 @@ function transformDatasourceForStorage(dataSource) {
         title: dataSource._title || dataSource.title || "",
         short_description: dataSource._shortDescription || dataSource.shortDescription || "",
         long_description: dataSource._longDescription || dataSource.longDescription || "",
-        update_date: new Date(dataSource.updateDate).toISOString(),
+        update_date: new Date(dataSource.updateDate),
         license: dataSource.license || "",
         status_code: dataSource.statusCode || "",
         data_description_url: dataSource.descriptionUrl || dataSource.data_description_url || "",
@@ -183,6 +180,39 @@ async function localSafeDatasource(dataSource) {
     const cleanedData = transformDatasourceForStorage(dataSource);
     localStorage.setItem("dataSource", JSON.stringify(cleanedData));
     console.log("Datenquelle gespeichert:", cleanedData);
+}
+
+async function loadLocalDatasource() {
+    const stored = localStorage.getItem("dataSource");
+
+    if (!stored) {
+        console.warn("Keine lokale Datenquelle gefunden.");
+        return null;
+    }
+
+    try {
+        const parsed = JSON.parse(stored);
+        console.log("Lokale Datenquelle geladen:", parsed);
+
+        const rebuildDSManager = new ObjectManager(Datenquelle);
+        const rebuildDS = buildDatenquelleFromJson(parsed);
+        rebuildDSManager.add(rebuildDS);
+        window.datenquellenManager = rebuildDSManager;
+
+        const rawDatensaetze = parsed.datensaetze || [];
+        rawDatensaetze.forEach(element => {
+            const ds = new Datensatz(element.id, element.attributes.pos_lat, element.attributes.pos_lon);
+            for (const key in element.attributes){
+                ds.setAttribute(key, element.attributes[key]);
+            }
+            rebuildDS.addDatensatz(ds);
+        });
+
+        return rebuildDS;
+    } catch (error) {
+        console.error("Fehler beim Parsen der lokalen Datenquelle:", error);
+        return null;
+    }
 }
 
 
@@ -282,15 +312,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+var online=false;
 
 document.addEventListener("DOMContentLoaded", async () => {
     //initializeData(window['projects'], window['datasources']);
     //addRandDatasources(window['datasets']);
     
-    await loadExternData();
-    showDatasource();
+    online = navigator.online;
+
+    if(await loadExternData()){
+        let tempDs = getDatasource();
+        const DS = tempDs? tempDs[0]: null;
+        showDatasource(DS);
+        localSafeDatasource(DS);
+    } else{
+        const DS = await loadLocalDatasource();
+        showDatasource(DS);
+    }
 
     ["DsTitle", "DsShortDescription", "DsDate", "DsLink", "DsLicense", "changeDataBtn"]
     .forEach(id => document.getElementById(id).addEventListener("click", openForm));
 
 });
+
+async function updateOnlineStatus() {
+    if(online != navigator.online && online == true){
+        window.location.reload();
+    }
+}
+
+
+const intervallId = setInterval(updateOnlineStatus, 5000);
