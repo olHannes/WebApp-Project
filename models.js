@@ -3,10 +3,12 @@ class Entity {
   constructor(pId, pTitle, pShortDescription, pLongDescription) {
     this.id = pId;
     this.title = pTitle;
-    this.shortDescription =
+    if(pShortDescription){
+      this.shortDescription =
       pShortDescription.length <= 255
-        ? pShortDescription
-        : pShortDescription.slice(0, 255);
+      ? pShortDescription
+      : pShortDescription.slice(0, 255);
+    }
     this.longDescription = pLongDescription;
   }
 

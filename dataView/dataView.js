@@ -217,8 +217,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         submitBtn.textContent = "Speichern...";
 
         const formData = new FormData(form);
-        const payload = Object.fromEntries(formData.entries());
+        const rawData = Object.fromEntries(formData.entries());
 
+        const payload = {
+            title: rawData.titel,
+            short_description: rawData.beschreibungA,
+            update_date: new Date(rawData.dateA).toISOString(),
+            data_description_url: rawData.quelleA,
+            data_api_url: rawData.apiLink || "",
+            license: rawData.lizenz,
+            long_description: rawData.nutzung,
+            status_code: "",
+            id: getDatasourceIdFromURL()
+        };
+    
         try {
             const res = await fetch(`https://scl.fh-bielefeld.de/SmartDataProjects/smartdata/records/datasources/${getDatasourceIdFromURL()}?storage=smartmonitoring`, {
                 method: "PUT",
@@ -230,6 +242,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             alert("Daten erfolgreich gespeichert.");
             form.style.display = "none";
+            window.location.reload();
         } catch (err) {
             console.error(err);
             alert("Fehler beim Speichern.");

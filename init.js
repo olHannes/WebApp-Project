@@ -127,14 +127,15 @@ export async function loadExternData() {
     const datasourceUrl = "https://scl.fh-bielefeld.de/SmartDataProjects/smartdata/records/datasources?storage=smartmonitoring";
     const datasourceResponse = await fetch(datasourceUrl);
     const datasourceData = await datasourceResponse.json();
-
+    
     initializeData([], datasourceData.records);
     const ds = window.datenquellenManager;
-
+    
     for (const element of ds.items) {
-      const sensorDataUrl = element.data_api_url;
-
-      if (sensorDataUrl) {
+      let sensorDataUrl = element.data_api_url;
+      
+      if (element.id == 11) {
+        sensorDataUrl = "https://scl.fh-bielefeld.de/SmartDataAirquality/smartdata/records/sensor_b827eb8b2a02?storage=smartmonitoring&geotransform=latlon&size=50&page=1";
         const sensorResponse = await fetch(sensorDataUrl);
         const sensorData = await sensorResponse.json();
 
