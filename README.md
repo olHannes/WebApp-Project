@@ -11,3 +11,4 @@ Die Aufgabenstellungen befinden sich im Verzeichnis `Tasks/`:
 - `WBA_2025_Prak7 - JS.pdf`
 - `WBA_2025_Prak8 - DOM.pdf`
 - `WBA_2025_Prak9 - Anwendungs-Kommunikation.pdf`
+- `WBA_2025_Prak10 - Webanwendungen und Daten.pdf`
