@@ -63,6 +63,7 @@ function showDatasource() {
         renderExampleDataChart(datasets);
         renderExampleDataTable(datasets);
     }    
+    localSafeDatasource(DS);
 }
 
 function renderExampleDataMap(datasets){
@@ -159,6 +160,32 @@ function renderExampleDataTable(datasets) {
     table.appendChild(tbody);
     tableWrapper.appendChild(table);
 }
+
+
+function transformDatasourceForStorage(dataSource) {
+    return {
+        id: dataSource.id || null,
+        title: dataSource._title || dataSource.title || "",
+        short_description: dataSource._shortDescription || dataSource.shortDescription || "",
+        long_description: dataSource._longDescription || dataSource.longDescription || "",
+        update_date: new Date(dataSource.updateDate).toISOString(),
+        license: dataSource.license || "",
+        status_code: dataSource.statusCode || "",
+        data_description_url: dataSource.descriptionUrl || dataSource.data_description_url || "",
+        data_api_url: dataSource.apiUrl || dataSource.data_api_url || "",
+        projekte: Array.isArray(dataSource.projekte) ? dataSource.projekte : [],
+        datensaetze: Array.isArray(dataSource.datensaetze) ? dataSource.datensaetze : []
+    };
+}
+
+
+async function localSafeDatasource(dataSource) {
+    const cleanedData = transformDatasourceForStorage(dataSource);
+    localStorage.setItem("dataSource", JSON.stringify(cleanedData));
+    console.log("Datenquelle gespeichert:", cleanedData);
+}
+
+
 
 
 
