@@ -336,7 +336,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function updateOnlineStatus() {
-    console.log(navigator.onLine);
     if(online != navigator.onLine && online == true){
         window.location.reload();
     }

@@ -1,7 +1,6 @@
 import { Projekt, Datenquelle, Datensatz, ObjectManager } from './models.js';
 
 export function buildDatenquelleFromJson(json) {
-
     let ds = new Datenquelle(
         json.id,
         json.title,
@@ -14,8 +13,8 @@ export function buildDatenquelleFromJson(json) {
         json.status_code
     
     );
-    ds.data_api_url = json.data_api_url;
-    ds.data_description_url = json.data_description_url;
+    //ds.data_api_url = json.data_api_url;
+    //ds.data_description_url = json.data_description_url;
     return ds;
 }
 
@@ -121,28 +120,39 @@ export function addRandDatasources(exampleData) {
 
 
 
-
 export async function loadExternData() {
+  const datasourceUrl = "http://localhost:8080/SmartWebServiceTemplate/smarttemplate/datenquellen";
+  //const datasourceUrl = "https://scl.fh-bielefeld.de/SmartDataProjects/smartdata/records/datasources?storage=smartmonitoring";
+
+  let datasourceData = [];
+
   try {
-    const datasourceUrl = "https://scl.fh-bielefeld.de/SmartDataProjects/smartdata/records/datasources?storage=smartmonitoring";
     const datasourceResponse = await fetch(datasourceUrl);
-    const datasourceData = await datasourceResponse.json();
-    
-    initializeData([], datasourceData.records);
+
+    if (!datasourceResponse.ok) {
+      throw new Error(`HTTP-Fehler: ${datasourceResponse.status}`);
+    }
+
+    datasourceData = await datasourceResponse.json();
+
+    // initializeData([], datasourceData.records);
+    initializeData([], datasourceData);
+
     const ds = window.datenquellenManager;
-    
+
     for (const element of ds.items) {
       let sensorDataUrl = element.data_api_url;
-      
-      if (element.id == 11) {
+
+      if (element.id === 11) {
         sensorDataUrl = "https://scl.fh-bielefeld.de/SmartDataAirquality/smartdata/records/sensor_b827eb8b2a02?storage=smartmonitoring&geotransform=latlon&size=50&page=1";
+
         const sensorResponse = await fetch(sensorDataUrl);
         const sensorData = await sensorResponse.json();
 
-        let data = [];
+        const data = [];
 
         sensorData.records.forEach(record => {
-          let tempData = new Datensatz(record.id, record.pos_lat, record.pos_lon);
+          const tempData = new Datensatz(record.id, record.pos_lat, record.pos_lon);
 
           for (const key in record) {
             tempData.setAttribute(key, record[key]);
@@ -162,9 +172,10 @@ export async function loadExternData() {
     }
 
     return true;
+
   } catch (error) {
     console.error("Fehler beim Laden der externen Daten:", error);
     return false;
   }
-  return false;
 }
+
